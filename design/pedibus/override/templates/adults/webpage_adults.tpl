@@ -45,7 +45,7 @@
         {/if}
     {/if}
 
-    {cache-block subtree_expiry=$__ADULTS keys=concat($node.name|wash(),$node.node_id,"adults",$view_parameters.offset,$__LIMIT,$current_user.is_logged_in,$current_user.contentobject.name)}
+    {cache-block subtree_expiry=concat($__ADULTS_COUNT,"-",$view_parameters.offset) keys=concat($node.name|wash(),$node.node_id,"adults",$view_parameters.offset,$__LIMIT,$current_user.is_logged_in,$current_user.contentobject.name)}
         <div class="container-fluid main_cage row_list_box margin-bottom">
             <div class="row">
                 {foreach $__ADULTS as $__SINGLE_ADULT}
