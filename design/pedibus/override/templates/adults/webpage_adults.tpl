@@ -1,3 +1,4 @@
+{set-block scope=root variable=cache_ttl}0{/set-block}
 {def $__TITLE = $node.name|wash()}
 {def $__LIMIT = ezini( 'IlPedibus', 'adults_page_limit', 'ilpedibus.ini' )}
 {def $__ADULTS = fetch(

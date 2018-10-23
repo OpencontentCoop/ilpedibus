@@ -1,11 +1,18 @@
 {set-block scope=root variable=cache_ttl}0{/set-block}
+{def $__LIMIT = ezini( 'IlPedibus', 'limit_availability', 'ilpedibus.ini' )}
+{def $__CURRENT_TIMESTAMP = currentdate()}
 {def $__AVAIABILITIES = fetch(
                                 'content',
                                 'list',
                                 hash(
-                                    'parent_node_id', $node.node_id,
-                                    'class_identifier', 'disponibilita'
-                                )
+                                        'parent_node_id', $node.node_id,
+                                        'class_filter_type', 'include',
+                                        'class_filter_array', array('disponibilita'),
+                                        'attribute_filter', array(
+                                                                array( 'disponibilita/al','>=', $__CURRENT_TIMESTAMP)
+                                                            ),
+                                        'limit', $__LIMIT
+                                    )
                         )
 }
 
@@ -19,8 +26,6 @@
             {/foreach}
         {/if}
     {/if}
-
-{*    {$__LINES_FILTER|attribute(show)}*}
 
     {def $__DAY_IN_SECOND = ezini( 'IlPedibus', 'seconds_on_day', 'ilpedibus.ini' )}
     {def $__DAYS_MAP = ezini( 'IlPedibus', 'days_map', 'ilpedibus.ini' )}
@@ -43,8 +48,6 @@
 
     </style>
     {/literal}
-
-
 
     <script type="text/javascript">
     {literal}
@@ -77,28 +80,22 @@
         {def $__DAYS = array()}
         {def $__SKIP_LOOP = false()}
 
-{*        {if $__ITEM.data_map.linea.content.relation_list|count()}*}
-            {foreach $__AVAIABILITY.data_map.linea.content.relation_list as $__KEY => $__ITEM_REF}
-                {* ============== *}
-                {if $__LINES_FILTER|count()}
-                    {if $__LINES_FILTER|contains($__ITEM_REF.node_id)|not()}
-                        {set $__SKIP_LOOP = true()}
-                        {skip}
-                    {/if}
+        {foreach $__AVAIABILITY.data_map.linea.content.relation_list as $__KEY => $__ITEM_REF}
+            {if $__LINES_FILTER|count()}
+                {if $__LINES_FILTER|contains($__ITEM_REF.node_id)|not()}
+                    {set $__SKIP_LOOP = true()}
+                    {skip}
                 {/if}
-                {* ============== *}
+            {/if}
 
-                {def $__ITEM = fetch('content', 'node', hash('node_id', $__ITEM_REF.node_id))}
-                {set $__LINES_STR = concat($__LINES_STR, $__ITEM.name|wash())}
+            {def $__ITEM = fetch('content', 'node', hash('node_id', $__ITEM_REF.node_id))}
+            {set $__LINES_STR = concat($__LINES_STR, $__ITEM.name|wash())}
 
-                {if inc($__KEY)lt($__AVAIABILITY.data_map.linea.content.relation_list|count())}
-                    {set $__LINES_STR = concat($__LINES_STR, ", ")}
-                {/if}
-                {undef $__ITEM}
-            {/foreach}
-{*        {else}
-            {set $__SKIP_LOOP = true()}
-        {/if}*}
+            {if inc($__KEY)lt($__AVAIABILITY.data_map.linea.content.relation_list|count())}
+                {set $__LINES_STR = concat($__LINES_STR, ", ")}
+            {/if}
+            {undef $__ITEM}
+        {/foreach}
 
         {if $__SKIP_LOOP|not()}
             {foreach $__AVAIABILITY.data_map.giorno.content.relation_list as $__KEY => $__ITEM_REF}
@@ -129,7 +126,6 @@
                         {rdelim}{if inc($__A_KEY)le($__AVAIABILITIES|count())},{/if}
                     {/if}
 
-        {*            {while ne($__PERIOD, $__AVAIABILITY.data_map.al.data_int )}*}
                     {while $__PERIOD|lt($__AVAIABILITY.data_map.al.data_int )}
 
                         {set $__PERIOD = sum($__PERIOD,$__DAY_IN_SECOND)}
@@ -188,3 +184,4 @@
 {else}
     <p>Nessuna Disponibilità presente</p>
 {/if}
+{undef}

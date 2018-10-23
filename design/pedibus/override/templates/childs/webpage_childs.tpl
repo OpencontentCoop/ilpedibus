@@ -1,14 +1,6 @@
+{set-block scope=root variable=cache_ttl}0{/set-block}
 {def $__TITLE = $node.name|wash()}
 {def $__LIMIT = ezini( 'IlPedibus', 'childs_page_limit', 'ilpedibus.ini' )}
-{*{def $__CHILDS = fetch(
-                        'content',
-                        'list',
-                        hash(
-                            'parent_node_id', $node.node_id,
-                            'class_identifier', 'bambino',
-                            'sort_by', array( 'name', true() )
-                        )
-                    )}*}
 {* Deciso di prendere solo i bambini che sono sotto adesioni  *}
 {def $__ACCESSIONS = fetch(
                         'content',
@@ -16,9 +8,20 @@
                         hash(
                             'parent_node_id', ezini( 'IlPedibus', 'Adesioni', 'ilpedibus.ini' ),
                             'class_identifier', 'adesione',
-                            'sort_by', array( 'name', true() )
+                            'sort_by', array( 'name', true() ),
+                            'offset', $view_parameters.offset,
+                            'limit', $__LIMIT
                         )
                     )}
+{def $__ACCESSIONS_COUNT = fetch(
+                            'content',
+                            'list_count',
+                            hash(
+                                'parent_node_id', $node.node_id,
+                                'class_identifier', 'adesione'
+                            )
+                    )
+}
 
 {if $node.data_map.short_name.has_content}
     {set $__TITLE = $node.data_map.short_name.content|wash()}
@@ -31,8 +34,6 @@
     </div>
 </div>
 
-{*{$__ACCESSIONS|attribute(show)}*}
-
 {if $__ACCESSIONS|count()}
     {def $current_user = fetch( 'user', 'current_user' )}
     {def $__LINES_FILTER = array()}
@@ -44,12 +45,12 @@
         {/if}
     {/if}
 
-    {cache-block subtree_expiry=$__ACCESSIONS keys=concat($node.name|wash(),$node.node_id,"accessions",$view_parameters.offset,$__LIMIT,$current_user.is_logged_in,$current_user.contentobject.name)}
+    {cache-block subtree_expiry=$node.url_alias keys=concat($node.name|wash(),$node.node_id,"accessions",$view_parameters.offset,$__LIMIT,$current_user.is_logged_in,$current_user.contentobject.name)}
         <div class="container-fluid main_cage row_list_stops margin-bottom">
             <div class="row">
                 <div class="col-xs-12">
                     <ul>
-                        {foreach $__ACCESSIONS|extract($view_parameters.offset,$__LIMIT) as $__ACCESSION_REF}
+                        {foreach $__ACCESSIONS as $__ACCESSION_REF}
                             {def $__ACCESSION = fetch('content', 'node', hash('node_id', $__ACCESSION_REF.node_id))}
                             {if $__ACCESSION.data_map.bambino.content.relation_list|count()}
 
@@ -103,7 +104,7 @@
     {include name=navigator
             uri='design:navigator/google.tpl'
             page_uri=$node.url_alias
-            item_count=$__CHILDS|count()
+            item_count=$__ACCESSIONS_COUNT
             view_parameters=$view_parameters
             item_limit=$__LIMIT}
 {/if}

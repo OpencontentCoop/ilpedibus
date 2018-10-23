@@ -1,3 +1,5 @@
+{def $__LIMIT = ezini( 'IlPedibus', 'max_childs_calendar', 'ilpedibus.ini' )}
+
 {def $__TITLE = $node.name|wash()}
 {if $node.data_map.short_name.has_content}
     {set $__TITLE = $node.data_map.short_name.content|wash()}
@@ -7,7 +9,8 @@
                         'content',
                         'list',
                         hash(
-                            'parent_node_id', $node.node_id
+                            'parent_node_id', $node.node_id,
+                            'limit', $__LIMIT
                         )
                     )
 }
@@ -44,3 +47,4 @@
         </div>
     </div>
 {/if}
+{undef}

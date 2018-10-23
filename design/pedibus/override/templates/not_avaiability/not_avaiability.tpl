@@ -19,8 +19,6 @@
         {/if}
     {/if}
 
-
-    {*{$__OBJECTS[0]|attribute(show)}*}
     {literal}
     <style>
 
@@ -58,11 +56,11 @@
                     {/literal}
                         defaultDate: '{currentdate()|datetime('custom', '%Y-%m-%d')}',
                     {literal}
-                        buttonIcons: true, // show the prev/next text
+                        buttonIcons: true,
                         weekNumbers: false,
-                        navLinks: true, // can click day/week names to navigate views
+                        navLinks: true,
                         editable: false,
-                        eventLimit: false, // allow "more" link when too many events
+                        eventLimit: false,
                         events: [
     {/literal}
     {foreach $__OBJECTS as $__A_KEY => $__ITEM}
@@ -77,14 +75,12 @@
 
             {if $__ITEM.data_map.linea.content.relation_list|count()}
                 {foreach $__ITEM.data_map.linea.content.relation_list as $__KEY => $__ITEM_REF}
-                    {* ============== *}
                     {if $__LINES_FILTER|count()}
                         {if $__LINES_FILTER|contains($__ITEM_REF.node_id)|not()}
                             {set $__SKIP_LOOP = true()}
                             {skip}
                         {/if}
                     {/if}
-                    {* ============== *}
                     {def $__ITEM_ITEM = fetch('content', 'node', hash('node_id', $__ITEM_REF.node_id))}
                     {set $__LINES_STR = concat($__LINES_STR, $__ITEM_ITEM.name|wash())}
 
@@ -121,14 +117,12 @@
 
                 {if $__ITEM_NOT_AVAIABLE.data_map.linea.content.relation_list|count()}
                     {foreach $__ITEM_NOT_AVAIABLE.data_map.linea.content.relation_list as $__KEY => $__ITEM_LINE_REF}
-                        {* ============== *}
                         {if $__LINES_FILTER|count()}
                             {if $__LINES_FILTER|contains($__ITEM_LINE_REF.node_id)|not()}
                                 {set $__SKIP_LOOP = true()}
                                 {skip}
                             {/if}
                         {/if}
-                        {* ============== *}
                         {def $__ITEM_LINE_OBJ = fetch('content', 'node', hash('node_id', $__ITEM_LINE_REF.node_id))}
 
                         {set $__LINES_STR = $__LINES_STR|append(concat("Sostituzione - ", $__ITEM_LINE_OBJ.name|wash()))}

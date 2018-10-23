@@ -1,4 +1,5 @@
 {set-block scope=root variable=cache_ttl}0{/set-block}
+{def $__LIMIT = ezini( 'IlPedibus', 'max_lines', 'ilpedibus.ini' )}
 {def $__TITLE = $node.name|wash()}
 {def $__LINEE = fetch(
                         'content',
@@ -6,9 +7,21 @@
                         hash(
                             'parent_node_id', $node.node_id,
                             'class_identifier', 'linea',
-                            'sort_by', array( 'priority', true() )
+                            'sort_by', array( 'priority', true() ),
+                            'offset', $view_parameters.offset,
+                            'limit', $__LIMIT
                         )
                     )}
+
+{def $__LINEE_COUNT = fetch(
+                            'content',
+                            'list_count',
+                            hash(
+                                'parent_node_id', $node.node_id,
+                                'class_identifier', 'linea'
+                            )
+                    )
+}
 
 {if $node.data_map.short_name.has_content}
     {set $__TITLE = $node.data_map.short_name.content|wash()}
@@ -21,16 +34,6 @@
     </div>
 </div>
 
-{*{ fetch('content', 'node', hash('node_id', $__LINEE[0].data_map.fermate.content.relation_list[0]))|attribute(show)}*}
-{*
-class_identifier	string	''
-*}
-
-
-
-
-{*{$__LINES_FILTER|attribute('show')}*}
-
 {if $__LINEE|count()}
     {def $current_user = fetch( 'user', 'current_user' )}
     {def $__LINES_FILTER = array()}
@@ -42,7 +45,7 @@ class_identifier	string	''
         {/if}
     {/if}
 
-    {cache-block subtree_expiry=$__LINEE keys=concat($node.name|wash(),$node.node_id,"linee",$current_user.is_logged_in,$current_user.contentobject.name)}
+    {cache-block subtree_expiry=$node.url_alias keys=concat($node.name|wash(),$node.node_id,"linee",$current_user.is_logged_in,$current_user.contentobject.name)}
         <div class="container-fluid main_cage row_list_lines margin-bottom">
             <div class="row">
             {foreach $__LINEE as $__SINGLE_LINE}
@@ -59,9 +62,6 @@ class_identifier	string	''
                                 </div>
                             </div>
                         {/if}
-{*                        <div class="col-sm-4 col-sm-3 contain-img">
-                            <img src="{'ph_small_map.jpg'|ezimage(no)}" alt="{$__SINGLE_LINE.name|wash()}" title="{$__SINGLE_LINE.name|wash()}"/>
-                        </div>*}
 
                         <div class="col-sm-8 col-sm-9 line_caption">
                             {def $__BUTTON_CLASS = ""}
@@ -82,8 +82,6 @@ class_identifier	string	''
                                         {foreach  $__SINGLE_LINE.data_map.fermate.content.relation_list as $__KEY => $__SINGLE_STOP_REF}
                                             {def $__SINGLE_STOP = fetch('content', 'node', hash('node_id', $__SINGLE_STOP_REF.node_id))}
 
-{*                                            {$__SINGLE_STOP.data_map|attribute(show)}*}
-
                                             {$__SINGLE_STOP.name|wash()}{if inc($__KEY)|lt($__SINGLE_LINE.data_map.fermate.content.relation_list|count())}&nbsp;-{/if}
                                             {undef $__SINGLE_STOP}
                                         {/foreach}
@@ -98,5 +96,11 @@ class_identifier	string	''
             </div>
         </div>
     {/cache-block}
+    {include name=navigator
+            uri='design:navigator/google.tpl'
+            page_uri=$node.url_alias
+            item_count=$__LINEE_COUNT
+            view_parameters=$view_parameters
+            item_limit=$__LIMIT}
 {/if}
 {undef}
