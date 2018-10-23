@@ -37,19 +37,7 @@
                     )
     }
 
-{*    {def $__STOP_LINE = ""}
-    {foreach $__LINES as $__SINGLE_LINE}
-        {if $__SINGLE_LINE.main_node.class_identifier|eq("linea")}
-            {set $__STOP_LINE = $__SINGLE_LINE.main_node}
-            {break}
-        {/if}
-    {/foreach}*}
-
-    {*{def $__CALENDARIO_DISPONIBILITA_URI = fetch('content','node',hash('node_id', ezini( 'IlPedibus', 'CalendarioDisponibilita', 'ilpedibus.ini' )))}*}
-
     {def $__MODULISTICA_URI = fetch('content','node',hash('node_id', ezini( 'IlPedibus', 'Modulistica', 'ilpedibus.ini' )))}
-
-    {*{$__LINES|attribute(show)}*}
 
     <div class="container-fluid main_cage row_content_with_side margin-both">
         <div class="row">
@@ -82,7 +70,6 @@
             </div>
             <div class="col-sm-3 col-md-4">
                 <div class="sidebar">
-    {*                <p class="sidebar_title">Riferimenti</p>*}
                     {if $__LINES|count()}
                         {cache-block subtree_expiry=$__LINES keys=concat($node.name|wash(),$node.node_id,"avaiable")}
                             <div class="side_block side_volunteers">
@@ -109,9 +96,6 @@
                         <div class="side_block side_docs">
                             <p class="side_title"><i class="fa fa-file-text" aria-hidden="true"></i><span>Iscrizione:</span></p>
                             <ul>
-    {*                            {if $__CALENDARIO_DISPONIBILITA_URI.url|count_chars()}
-                                    <li><a href="{$__CALENDARIO_DISPONIBILITA_URI.url|ezurl(no)}" target="_blank">Calendario disponibilità</a></li>
-                                {/if}*}
                                 {if $__MODULISTICA_URI.url|count_chars()}
                                     <li><a href="{$__MODULISTICA_URI.url|ezurl(no)}" target="_blank">Accedi alla modulistica per l'iscrizione</a></li>
                                 {/if}

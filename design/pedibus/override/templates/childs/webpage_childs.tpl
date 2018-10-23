@@ -34,7 +34,7 @@
     </div>
 </div>
 
-{if $__ACCESSIONS|count()}
+{if $__ACCESSIONS_COUNT|count()}
     {def $current_user = fetch( 'user', 'current_user' )}
     {def $__LINES_FILTER = array()}
     {if $current_user.is_logged_in}

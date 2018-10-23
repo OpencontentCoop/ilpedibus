@@ -7,9 +7,21 @@
                         hash(
                             'parent_node_id', $node.node_id,
                             'class_identifier', 'fermata',
-                            'sort_by', array( 'priority', true() )
+                            'sort_by', array( 'priority', true() ),
+                            'offset', $view_parameters.offset,
+                            'limit', $__LIMIT
                         )
                 )
+}
+
+{def $__STOPS_COUNT = fetch(
+                            'content',
+                            'list_count',
+                            hash(
+                                'parent_node_id', $node.node_id,
+                                'class_identifier', 'fermata'
+                            )
+                    )
 }
 
 {if $node.data_map.short_name.has_content}
@@ -23,9 +35,7 @@
     </div>
 </div>
 
-{*{ fetch('content', 'node', hash('node_id', $__LINEE[0].data_map.fermate.content.relation_list[0]))|attribute(show)}*}
-
-{if $__STOPS|count()}
+{if $__STOPS_COUNT|count()}
     {def $current_user = fetch( 'user', 'current_user' )}
     {def $__LINES_FILTER = array()}
     {if $current_user.is_logged_in}
@@ -36,27 +46,26 @@
         {/if}
     {/if}
 
-    {cache-block subtree_expiry=$__STOPS keys=concat($node.name|wash(),$node.node_id,"stops",$view_parameters.offset,$__LIMIT,$current_user.is_logged_in,$current_user.contentobject.name)}
+    {cache-block subtree_expiry=$node.url_alias keys=concat($node.name|wash(),$node.node_id,"stops",$view_parameters.offset,$__LIMIT,$current_user.is_logged_in,$current_user.contentobject.name)}
         <div class="container-fluid main_cage row_list_stops line margin-bottom">
             <div class="row">
                 <div class="col-xs-12">
                     <ul>
                     {def $__BUTTON_CLASS = ""}
-                    {foreach $__STOPS|extract($view_parameters.offset,$__LIMIT) as $__SINGLE_STOP}
-                        {*--------------------------------*}
+                    {foreach $__STOPS as $__SINGLE_STOP}
                         {def $__JUMP_LOOP = false()}
                         {if $__LINES_FILTER|count()}
                             {def $__LINES_RELATIVE = 0}
                             {def $__LINES = fetch(
-                                                            'content',
-                                                            'reverse_related_objects',
-                                                            hash(
-                                                                    'object_id',$__SINGLE_STOP.object.id,
-                                                                    'sort_by',  array( 'name', true() ),
-                                                                    'all_relations', true(),
-                                                                    'attribute_identifier', 'linea/fermate'
-                                                            )
-                                            )
+                                                    'content',
+                                                    'reverse_related_objects',
+                                                    hash(
+                                                            'object_id',$__SINGLE_STOP.object.id,
+                                                            'sort_by',  array( 'name', true() ),
+                                                            'all_relations', true(),
+                                                            'attribute_identifier', 'linea/fermate'
+                                                    )
+                                                )
                             }
 
                             {if $__LINES|count()|eq(0)}
@@ -76,7 +85,6 @@
                             {undef $__LINES}
                             {undef $__LINES_RELATIVE}
                         {/if}
-                        {*--------------------------------*}
                         {if $__JUMP_LOOP|not()}
                             {if $__SINGLE_STOP.name|downcase()|contains("linea rossa")}
                                 {set $__BUTTON_CLASS = " red_line"}
@@ -101,7 +109,7 @@
     {include name=navigator
             uri='design:navigator/google.tpl'
             page_uri=$node.url_alias
-            item_count=$__STOPS|count()
+            item_count=$__STOPS_COUNT
             view_parameters=$view_parameters
             item_limit=$__LIMIT}
 {/if}
