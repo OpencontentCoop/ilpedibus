@@ -27,8 +27,6 @@
             {
                 $.post("/ilpedibus_ajax/availability", {}).done(function( data )
                 {
-                    console.log( "LENGTH == " + data.length );
-
                     if( data.length )
                     {
                         $('#pedibuscalendar').fullCalendar(
