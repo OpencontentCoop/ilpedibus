@@ -31,12 +31,6 @@
 
                     if( data.length )
                     {
-//                        console.log( JSON.stringify(data) );
-//                        for(var availability in data)
-//                        {
-//                            console.log( JSON.stringify(data[availability]) );
-//
-//                        }
                         $('#pedibuscalendar').fullCalendar(
                         {
                             header: {
