@@ -1,0 +1,24 @@
+{
+    "name": "interline/ilpedibus-ls",
+    "description": "IlPedibus eZPublish Legacy Extension",
+    "type": "ezpublish-legacy-extension",
+    "authors": [
+        {
+            "name": "Interline",
+            "homepage": "https://www.interline.it/"
+        },
+        {
+            "name": "OpenContent",
+            "homepage": "http://www.opencontent.it"
+        }
+    ],
+    "license": "GPL-2.0",    
+    "minimum-stability": "dev",
+    "require": {
+        "ezsystems/ezpublish-legacy-installer": "*",
+        "interline/ilpedibus_reserved_area-ls": "*"
+    },
+    "extra": {
+        "ezpublish-legacy-extension-name": "ilpedibus"
+    }
+}
