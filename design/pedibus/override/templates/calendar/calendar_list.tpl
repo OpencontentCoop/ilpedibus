@@ -1,3 +1,4 @@
+{ezpagedata_set('has_container',  true())}
 {def $__LIMIT = ezini( 'IlPedibus', 'max_childs_calendar', 'ilpedibus.ini' )}
 
 {def $__TITLE = $node.name|wash()}

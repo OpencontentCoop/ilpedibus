@@ -1,3 +1,4 @@
+{ezpagedata_set('has_container',  true())}
 {set-block scope=root variable=cache_ttl}0{/set-block}
 {def $__LIMIT = ezini( 'IlPedibus', 'max_lines', 'ilpedibus.ini' )}
 {def $__TITLE = $node.name|wash()}

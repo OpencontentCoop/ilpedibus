@@ -1,3 +1,4 @@
+{ezpagedata_set('has_container',  true())}
 {set-block scope=root variable=cache_ttl}0{/set-block}
 {def $__OBJECTS = fetch(
                                 'content',
@@ -97,7 +98,7 @@
             {if $__SKIP_LOOP|not()}
                 {foreach $__ITEM.data_map.volontario.content.relation_list as $__KEY => $__ITEM_REF}
                     {def $__ITEM_ITEM = fetch('content', 'node', hash('node_id', $__ITEM_REF.node_id))}
-                    {set $__ADULTS = $__ADULTS|merge( hash($__ITEM_ITEM.name|wash(), $__ITEM_ITEM.url|ezroot(,'full')))}
+                    {set $__ADULTS = $__ADULTS|merge( hash($__ITEM_ITEM.name|wash(), $__ITEM_ITEM.url|ezurl(,'full')))}
                     {undef $__ITEM_ITEM}
                 {/foreach}
 
@@ -143,7 +144,7 @@
             {if $__SKIP_LOOP|not()}
                 {foreach $__ITEM.data_map.volontario.content.relation_list as $__KEY => $__ITEM_REF}
                     {def $__ITEM_ITEM = fetch('content', 'node', hash('node_id', $__ITEM_REF.node_id))}
-                    {set $__ADULTS = $__ADULTS|merge( hash($__ITEM_ITEM.name|wash(), $__ITEM_ITEM.url|ezroot(,'full')))}
+                    {set $__ADULTS = $__ADULTS|merge( hash($__ITEM_ITEM.name|wash(), $__ITEM_ITEM.url|ezurl(,'full')))}
                     {undef $__ITEM_ITEM}
                 {/foreach}
             {/if}

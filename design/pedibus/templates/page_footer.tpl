@@ -69,7 +69,7 @@
                 </p>
             </div>
             <div class="col-sm-3 text-center">
-                <a href="{$__MODULI.url|ezroot('no')}" class="btn btn_subscribe">Iscriviti subito</a>
+                <a href="{$__MODULI.url|ezurl('no')}" class="btn btn_subscribe">Iscriviti subito</a>
             </div>
         </div>
     </div>
@@ -81,7 +81,7 @@
             <div class="row">
                 <p class="section_title text-center">gli itinerari</p>
 
-                <a href="{$__LINEE.url|ezroot('no')}">
+                <a href="{$__LINEE.url|ezurl('no')}">
                     <img src="{'maps.jpg'|ezimage(no)}" style="width:100%" data-src="" alt="mappa linee pedibus" title="mappa linee pedibus">
                 </a>
 {*<!--
@@ -114,10 +114,6 @@
     {/if}
 {/if}
 
-
-{if and( $pagedata.homepage|has_attribute('partners'), $pagedata.homepage|attribute('partners').has_content) }
-    {include uri='design:footer/partners.tpl'}
-{/if}
 
 <div id="strip_footer" class="strip">
     <footer id="footer" class="container-fluid main_cage">
@@ -178,17 +174,17 @@
                     {if $current_user.is_logged_in|not()}
                         <p class="info_title">Area Riservata</p>
                         <p class="reserved-area">
-                            <a href="{$__AREA_RISERVATA.url|ezroot('no')}" class="button" target="_blank">
+                            <a href="{$__AREA_RISERVATA.url|ezurl('no')}" class="button" target="_blank">
                                 <i class="fa fa-lock"></i><span class="title">Accedi</span><br>all'area riservata
                             </a>
                         </p>
                     {else}
-                        <a class="info_title" href="\{$__AREA_RISERVATA.url}">Area Riservata</a>
+                        <a class="info_title" href="{$__AREA_RISERVATA.url|ezurl('no')}">Area Riservata</a>
                         <p>
                             Benvenuto <strong>{$current_user.contentobject.name|wash()}</strong>
                         </p>
                         <p>
-                            <a href="{'user/logout'|ezroot('no')}">clicca qui per uscire</a>
+                            <a href="{'user/logout'|ezurl('no')}">clicca qui per uscire</a>
                         </p>
                     {/if}
                 </div>

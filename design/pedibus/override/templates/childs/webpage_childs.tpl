@@ -1,3 +1,4 @@
+{ezpagedata_set('has_container',  true())}
 {set-block scope=root variable=cache_ttl}0{/set-block}
 {def $__TITLE = $node.name|wash()}
 {def $__LIMIT = ezini( 'IlPedibus', 'childs_page_limit', 'ilpedibus.ini' )}
@@ -87,7 +88,7 @@
                                     <div class="name_adult col-md-9">
                                         {* Prendo sempre il primo genitore *}
                                         {if $__REVERSE_RELATED_OBJS|count()}
-                                            <a href="{$__REVERSE_RELATED_OBJS[0].main_node.url|ezroot('no')}" class="btn">
+                                            <a href="{$__REVERSE_RELATED_OBJS[0].main_node.url|ezurl('no')}" class="btn">
                                                 Accedi ai dati del genitore di <strong>{$__SINGLE_CHILD.name|wash()}</strong>
                                             </a>
                                         {/if}

@@ -1,3 +1,4 @@
+{ezpagedata_set('has_container',  true())}
 {set-block scope=root variable=cache_ttl}0{/set-block}
 {def $__AREA_RISERVATA = fetch('content','node',hash('node_id', ezini( 'IlPedibus', 'AreaRiservata', 'ilpedibus.ini' )))}
 {def $__CURRENT_TIMESTAMP = currentdate()}
@@ -41,12 +42,12 @@
                 $__ABSENCES|count()
                 )
         }
-            <form action="/ilpedibus_ra/substitution" method="post">
+            <form action="{'/ilpedibus_ra/substitution'|ezurl(no)}" method="post">
                 <div class="row">
                     <div class="col-xs-12">
                         <h3>Assenza (richiesto)</h3>
                         <p class="small">Seleziona l'assenza da sostituire</p>
-                        <select name="substitution_absence">
+                        <select name="substitution_absence" class="form-control">
                         {foreach $__ABSENCES as $__ABSENCE}
                             {* PATCH: il fetch delle assenze anche se filtrato per 'assenza_volontario' prende
                             tutti i suoi figli *}
@@ -65,7 +66,7 @@
                     <div class="col-xs-12">
                         <h3>Volontario (richiesto)</h3>
                         <p class="small">Seleziona il volontario che sopperisce all'assenza</p>
-                        <select name="substitution_volunteer">
+                        <select name="substitution_volunteer" class="form-control">
                         {foreach $__VOLUNTEERS as $__VOLUNTEER}
                             <option value="{$__VOLUNTEER.contentobject_id}">{$__VOLUNTEER.name|wash()}</option>
                         {/foreach}
@@ -78,7 +79,7 @@
                         <button type="submit" class="btn action">Salva</button>
                     </div>
                     <div class="col-xs-12">
-                        <a href="{$__AREA_RISERVATA.url|ezroot('no')}" class="">Annulla l'inserimento</a>
+                        <a href="{$__AREA_RISERVATA.url|ezurl('no')}" class="">Annulla l'inserimento</a>
                     </div>
                 </div>
                 <input type="hidden" name="__URL__" value={$node.url|ezurl()} >
@@ -90,7 +91,7 @@
                 </strong>
 			</p>
             <div class="col-xs-12">
-                <a href="{$__AREA_RISERVATA.url|ezroot('no')}" class="">Torna all'area riservata</a>
+                <a href="{$__AREA_RISERVATA.url|ezurl('no')}" class="">Torna all'area riservata</a>
             </div>
         {/if}
 	{elseif and(is_set($view_parameters.error),$view_parameters.error|ne(''))}
@@ -104,7 +105,7 @@
                 </strong>
 			</p>
             <div class="col-xs-12">
-                <a href="{$__AREA_RISERVATA.url|ezroot('no')}" class="">Torna all'area riservata</a>
+                <a href="{$__AREA_RISERVATA.url|ezurl('no')}" class="">Torna all'area riservata</a>
             </div>
 		{elseif $view_parameters.error|int()|eq(1)}
 			<p>
@@ -113,7 +114,7 @@
                 </strong>
 			</p>
             <div class="col-xs-12">
-                <a href="{$__AREA_RISERVATA.url|ezroot('no')}" class="">Torna all'area riservata</a>
+                <a href="{$__AREA_RISERVATA.url|ezurl('no')}" class="">Torna all'area riservata</a>
             </div>
 		{/if}
 	{elseif is_set($view_parameters.ok)}
@@ -124,7 +125,7 @@
 		</p>
 		<br/>
         <div class="col-xs-12">
-            <a href="{$__AREA_RISERVATA.url|ezroot('no')}" class="">Torna all'area riservata</a>
+            <a href="{$__AREA_RISERVATA.url|ezurl('no')}" class="">Torna all'area riservata</a>
         </div>
 	{/if}
 </div>

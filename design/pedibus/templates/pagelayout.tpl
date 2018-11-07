@@ -35,12 +35,6 @@
         {/if}
     {/if}
 
-    {if and( is_area_tematica(), array( 'edit', 'browse' )|contains( $ui_context )|not() )}
-      {def $area = is_area_tematica()}
-      {if $area.data_map.stile.has_content}
-        {set $class_body = $area.data_map.stile.content}
-      {/if}
-    {/if}
 
     {include uri='design:page_head.tpl'}
     {include uri='design:page_head_style.tpl'}
@@ -70,28 +64,19 @@
         {include uri='design:page_toolbar.tpl'}
     {/if}
 
-{*    {include uri='design:page_header.tpl'}*}
-
 
 <section id="header" class="navbar-fixed-top container-fluid">
     <div class="top-nav row row-eq-height hidden-xs main_cage">
         <div class="col-xs-3">
-            <a href="/"><img class="main_logo" src="{'logo.png'|ezimage(no)}" alt="Pedibus" title="Pedibus" /></a>
+            <a href="{'/'|ezurl(no)}"><img class="main_logo" src="{'logo.png'|ezimage(no)}" alt="Pedibus" title="Pedibus" /></a>
         </div>
         <div class="col-xs-9 text-right">
             <div class="search">
                 <form id="search_form" action="{"/content/search"|ezurl(no)}" class="form-horizontal" role="search">
                     <div class="input-group">
-                        {if is_area_tematica()}
-                            <input type="hidden" value="{is_area_tematica().node_id}" name="SubTreeArray[]"/>
-                            <input type="text" id="cerca" class="Form-input Grid-cell u-sizeFill u-text-r-s u-color-black u-text-r-xs"
-                                    required name="SearchText" {if $pagedata.is_edit}disabled="disabled"{/if}>
-                            <label class="Form-label u-color-grey-50 u-text-r-xxs" for="cerca">Cerca
-                            in {is_area_tematica().name|wash()}</label>
-                        {else}
+
                             <label for="srch">Cerca: </label>
                             <input type="text" class="form-control" placeholder="" required name="SearchText" {if $pagedata.is_edit}disabled="disabled"{/if}>
-                        {/if}
                         <div class="input-group-btn">
                             <button class="btn" type="submit" value="cerca" name="SearchButton" {if $pagedata.is_edit}disabled="disabled"{/if} title="Avvia la ricerca" aria-label="Avvia la ricerca"><i class="fa fa-search"></i></button>
                         </div>
@@ -102,15 +87,7 @@
                 </form>
             </div>
 
-            {def $area_tematica_links = array()}
-            {if is_area_tematica()}
-            {set $area_tematica_links = fetch( 'content', 'related_objects', hash( 'object_id', is_area_tematica().contentobject_id, 'attribute_identifier', 'area_tematica/link' ))}
-            {/if}
             <div class="contain_icons">
-{*                <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-                <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>*}
             {if or(is_set($pagedata.contacts.facebook), is_set($pagedata.contacts.twitter), is_set($pagedata.contacts.linkedin), is_set($pagedata.contacts.instagram))}
                 <ul class="Header-socialIcons">
                 {if is_set($pagedata.contacts.facebook)}
@@ -158,39 +135,16 @@
                     </li>
                 {/if}
 
-                {def $forms = fetch( 'content', 'class', hash( 'class_id', 'feedback_form' ) )
-                        $form = $forms.object_list[0]}
-                {if $form}
-                    <li>
-                    <a href="{$form.main_node.url_alias|ezurl(no)}">
-                                    <span class="openpa-icon fa-stack">
-                                        <i class="fa fa-circle fa-stack-2x u-color-90"></i>
-                                        <i class="fa fa-envelope fa-stack-1x u-color-white" aria-hidden="true"></i>
-                                    </span>
-                        <span class="u-hiddenVisually">Richiedi informaizini</span>
-                    </a>
-                    </li>
-                {/if}
-                {undef $forms $form}
                 </ul>
             {/if}
 
             </div>
         </div>
     </div>
-{*    {include uri='design:menu/header_menu.tpl'}*}
 
 {if and( $pagedata.is_login_page|not(), array( 'edit', 'browse' )|contains( $ui_context )|not(), openpaini( 'TopMenu', 'ShowMegaMenu', 'enabled' )|eq('enabled') )}
 
-{def $is_area_tematica = is_area_tematica()}
-{if and($is_area_tematica, $is_area_tematica|has_attribute('link_al_menu_orizzontale'))}
-    {def $top_menu_node_ids = array()}
-    {foreach $is_area_tematica|attribute('link_al_menu_orizzontale').content.relation_list as $item}
-        {set $top_menu_node_ids = $top_menu_node_ids|append($item.node_id)}
-    {/foreach}
-{else}
-    {def $top_menu_node_ids = openpaini( 'TopMenu', 'NodiCustomMenu', array() )}
-{/if}
+{def $top_menu_node_ids = openpaini( 'TopMenu', 'NodiCustomMenu', array() )}
 {def $top_menu_node_ids_count = $top_menu_node_ids|count()}
 
 {def $main_styles = openpaini( 'Stili', 'Nodo_NomeStile', array() )}
@@ -210,7 +164,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
                 <ul class="nav navbar-nav navbar-left">
-                    <li><a href="/">Home</a></li>
+                    <li><a href="{'/'|ezurl(no)}">Home</a></li>
                 {foreach $top_menu_node_ids as $id}
                     {def $tree_menu = tree_menu( hash( 'root_node_id', $id, 'scope', 'top_menu'))}
                     <li>
@@ -223,22 +177,17 @@
             </div>{*<!--/.nav-collapse -->*}
         </div>{*<!--/.container-fluid -->*}
     </nav>
-
-{undef $is_area_tematica}
 {/if}
 
 </section>
 
-{*    {include uri='design:menu/offcanvas_menu.tpl'}*}
-
-{*    <div id="main">*}
         {if and(is_set($pagedata.persistent_variable.has_sidemenu), $pagedata.persistent_variable.has_sidemenu)}
             <p class="u-md-hidden u-lg-hidden u-padding-r-all u-text-m u-background-grey-20">
                 <span class="Icon-list u-text-r-xl u-alignMiddle u-padding-r-right" aria-hidden="true"></span>
                 <a accesskey="3"  class="js-scrollTo u-text-r-s u-textClean u-color-grey-50 u-alignMiddle" href="#subnav" >Vai menu di sezione</a>
             </p>
         {/if}
-{*        <section class="maincontent {$main_content_class}">*}
+
         {if $pagedata.is_homepage}
             <header id="strip_header" class="strip clearfix">
                 <div class="container-fluid">

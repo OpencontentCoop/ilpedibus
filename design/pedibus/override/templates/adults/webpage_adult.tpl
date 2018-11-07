@@ -1,3 +1,4 @@
+{ezpagedata_set('has_container',  true())}
 {def $current_user = fetch( 'user', 'current_user' )}
 
 {def $__TITLE = $node.name|wash()}

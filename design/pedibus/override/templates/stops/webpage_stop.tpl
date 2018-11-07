@@ -1,3 +1,4 @@
+{ezpagedata_set('has_container',  true())}
 {def $__TITLE = $node.name|wash()}
 
 {if $node.data_map.short_name.has_content}

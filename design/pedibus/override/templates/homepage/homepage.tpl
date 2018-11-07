@@ -1,3 +1,4 @@
+{ezpagedata_set('has_container',  true())}
 {def $__HOME_BLOCKS = $node.data_map.homepage_blocks.content.relation_list}
 {def $__HOME_BLOCK = ""}
 {def $__TITLE = ''}

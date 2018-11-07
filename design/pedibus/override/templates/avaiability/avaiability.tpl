@@ -1,3 +1,4 @@
+{ezpagedata_set('has_container',  true())}
 {set-block scope=root variable=cache_ttl}0{/set-block}
 <style>
 {literal}
@@ -25,7 +26,7 @@
         {
             $(document).ready(function ()
             {
-                $.post("/ilpedibus_ajax/availability", {}).done(function( data )
+                $.post({/literal}"{'/ilpedibus_ajax/availability'|ezurl(no)}{literal}", {}).done(function( data )
                 {
                     if( data.length )
                     {
@@ -47,6 +48,7 @@
                             events: data,
                             eventRender: function(event, eventElement)
                             {
+                                $('#loader').hide();
                                 if(event.title.toLowerCase().indexOf(" verde ") > 0)
                                 {
                                     eventElement.addClass('green');
@@ -76,5 +78,7 @@
     });
 {/literal}
 </script>
-<div id='pedibuscalendar'></div>
+<div id='pedibuscalendar'>
+    <p class="text-center" id="loader"><i class="fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i></p>
+</div>
 {undef}
