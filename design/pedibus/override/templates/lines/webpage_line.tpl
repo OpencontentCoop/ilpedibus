@@ -1,11 +1,10 @@
-{ezpagedata_set('has_container',  true())}
+{set-block scope=root variable=cache_ttl}0{/set-block}
 {def $__TITLE = $node.name|wash()}
 
 {if $node.data_map.short_name.has_content}
     {set $__TITLE = $node.data_map.short_name.content|wash()}
 {/if}
 {def $current_user = fetch( 'user', 'current_user' )}
-
 
 {def $__BUTTON_CLASS = ""}
 {if $__TITLE|downcase()|contains("linea rossa")}
@@ -65,7 +64,6 @@
                             {if $node.data_map.fermate.content.relation_list|count()}
                                 {cache-block subtree_expiry=$node.data_map.fermate.content.relation_list keys=concat($node.name|wash(),$node.node_id,"stop-time")}
                                     <div class="stops_and_times row_list_stops">
-                                        <!--<p class="side_title"><i class="glyphicon glyphicon-time"></i><span>Orari:</span></p>-->
                                         <ul>
                                             {foreach $node.data_map.fermate.content.relation_list as $__SINGLE_FERMATA_REF}
                                                 {def $__FERMATA = fetch('content','node',hash('node_id', $__SINGLE_FERMATA_REF.node_id))}
@@ -84,8 +82,6 @@
                                                                 </span>
                                                             {/if}
                                                         {/if}
-
-            {*                                          {$__FERMATA.data_map.geo.content.address}*}
                                                         {$__FERMATA.name|wash()}
 
                                                     </a>
@@ -96,17 +92,6 @@
                                     </div>
                                 {/cache-block}
                          {/if}
-    <!--
-                            <ul>
-                            {foreach $node.data_map.fermate.content.relation_list as $__KEY => $__SINGLE_STOP_REF}
-                                {def $__SINGLE_STOP = fetch('content', 'node', hash('node_id', $__SINGLE_STOP_REF.node_id))}
-
-                                <li>{$__SINGLE_STOP.name|wash()}</li>
-
-                                {undef $__SINGLE_STOP}
-                            {/foreach}
-                            </ul>
-    -->
                     {/cache-block}
                 {/if}
 
@@ -118,10 +103,6 @@
                 {if $node.data_map.image.has_content}
                     <img src="{$node.data_map.image.content['pedibus_line_full_image'].url|ezroot('no')}" alt="{$node.data_map.image.content.alternative_text|wash()}" title="{$node.data_map.image.content.alternative_text|wash()}" class="image_border"/>
                 {/if}
-
-    {*            <img src="images/ph_map.jpg"/>*}
-
-    {*            <a href="#" class="btn btn_green"><i class="fa fa-map-marker"></i> Come Arrivare</a>*}
             </div>
             <div class="col-xs-12 col-sm-3 col-md-4">
                 <div class="sidebar">
@@ -137,12 +118,11 @@
                                 {foreach $__DISPONIBILITA as $__SINGLE_DISPONIBILITA}
                                     {foreach $__SINGLE_DISPONIBILITA.main_node.data_map.volontario.content.relation_list as $__SINGLE_VOLONTARIO}
                                         {def $__VOLONTARIO = fetch('content','node',hash('node_id', $__SINGLE_VOLONTARIO.node_id))}
-
-                                        <li>
-                                            <a href="{$__VOLONTARIO.url|ezurl(no)}">{concat($__VOLONTARIO.data_map.nome.content," ", $__VOLONTARIO.data_map.cognome.content)}</a>
-                                        </li>
-
-                                        {undef $__VOLONTARIO_NAME}
+                                        {if $__VOLONTARIO}
+                                            <li>
+                                                <a href="{$__VOLONTARIO.url|ezurl(no)}">{concat($__VOLONTARIO.data_map.nome.content," ", $__VOLONTARIO.data_map.cognome.content)}</a>
+                                            </li>
+                                        {/if}
                                         {undef $__VOLONTARIO}
                                     {/foreach}
                                 {/foreach}
@@ -171,33 +151,35 @@
                                     {foreach $__SINGLE_ADESIONE.main_node.data_map.bambino.content.relation_list as $__SINGLE_CHILD}
                                         {def $__CHILD = fetch('content','node',hash('node_id', $__SINGLE_CHILD.node_id))}
 
-                                        {def $__REVERSE_RELATED_ITEMS_CHILD = fetch(
-                                                                                'content',
-                                                                                'reverse_related_objects',
-                                                                                hash(
-                                                                                        'object_id',$__CHILD.object.id,
-                                                                                        'class_identifier', 'adulto',
-                                                                                        'all_relations', true()
-                                                                                )
-                                                                        )
-                                        }
+                                        {if $__CHILD}
+                                            {def $__REVERSE_RELATED_ITEMS_CHILD = fetch(
+                                                                                    'content',
+                                                                                    'reverse_related_objects',
+                                                                                    hash(
+                                                                                            'object_id',$__CHILD.object.id,
+                                                                                            'class_identifier', 'adulto',
+                                                                                            'all_relations', true()
+                                                                                    )
+                                                                            )
+                                            }
 
-                                        {def $__ADULT = ""}
-                                        {foreach $__REVERSE_RELATED_ITEMS_CHILD as $__CONTENT_OBJ}
-                                            {if $__CONTENT_OBJ.class_identifier|eq('adulto')}
-                                                {set $__ADULT = $__CONTENT_OBJ.main_node}
-                                                {break}
-                                            {/if}
-                                        {/foreach}
+                                            {def $__ADULT = ""}
+                                            {foreach $__REVERSE_RELATED_ITEMS_CHILD as $__CONTENT_OBJ}
+                                                {if $__CONTENT_OBJ.class_identifier|eq('adulto')}
+                                                    {set $__ADULT = $__CONTENT_OBJ.main_node}
+                                                    {break}
+                                                {/if}
+                                            {/foreach}
 
-                                        <li>
-                                            <a href="{$__ADULT.url|ezurl(no)}">
-                                                {concat($__CHILD.data_map.nome.content," ", $__CHILD.data_map.cognome.content)}
-                                            </a>
-                                        </li>
+                                            <li>
+                                                <a href="{$__ADULT.url|ezurl(no)}">
+                                                    {concat($__CHILD.data_map.nome.content," ", $__CHILD.data_map.cognome.content)}
+                                                </a>
+                                            </li>
 
-                                        {undef $__ADULT}
-                                        {undef $__REVERSE_RELATED_ITEMS_CHILD}
+                                            {undef $__ADULT}
+                                            {undef $__REVERSE_RELATED_ITEMS_CHILD}
+                                        {/if}
                                         {undef $__CHILD}
                                     {/foreach}
                                 {/foreach}
@@ -206,41 +188,6 @@
                                 </ul>
                             </div>
                     {/if}
-
-
-
-
-    {*                {if $node.data_map.fermate.content.relation_list|count()}
-                        {cache-block subtree_expiry=$node.data_map.fermate.content.relation_list keys=concat($node.name|wash(),$node.node_id,"stop-time")}
-                            <div class="side_block side_times">
-                                <p class="side_title"><i class="glyphicon glyphicon-time"></i><span>Orari:</span></p>
-                                <ul>
-                                    {foreach $node.data_map.fermate.content.relation_list as $__SINGLE_FERMATA_REF}
-                                        {def $__FERMATA = fetch('content','node',hash('node_id', $__SINGLE_FERMATA_REF.node_id))}
-                                        <li>
-                                            <a href="{$__FERMATA.url|ezurl('no')}">
-                                                {if $__STOP_TIME_FIELD|eq("Andata")}
-                                                    {if $__FERMATA.data_map.ora_andata.content|count_chars()}
-                                                        <span>
-                                                            {$__FERMATA.data_map.ora_andata.content}
-                                                        </span>
-                                                    {/if}
-                                                {else}
-                                                    {if $__FERMATA.data_map.ora_ritorno.content|count_chars()}
-                                                        <span>
-                                                            {$__FERMATA.data_map.ora_ritorno.content}
-                                                        </span>
-                                                    {/if}
-                                                {/if}
-                                                {$__FERMATA.name|wash()}
-                                            </a>
-                                        </li>
-                                        {undef $__FERMATA}
-                                    {/foreach}
-                                </ul>
-                            </div>
-                        {/cache-block}
-                    {/if}*}
                     {if $__MODULISTICA_URI.url|count_chars()}
                         <div class="side_block side_docs">
                             <p class="side_title"><i class="fa fa-file-text" aria-hidden="true"></i><span>Iscrizione:</span></p>
@@ -255,8 +202,5 @@
             </div>
         </div>
     </div>
-
-    {undef}
-
-
 </div>
+{undef}

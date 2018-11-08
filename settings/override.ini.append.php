@@ -91,10 +91,9 @@ Subdir=templates
 Match[class_identifier]=adulto
 
 ## GENITORI
-#:Stesso template di adulti, differenziato per permesso classi
 [ilpedibus_parents_container]
 Source=node/view/full.tpl
-MatchFile=adults/webpage_adults.tpl
+MatchFile=adults/webpage_parents.tpl
 Subdir=templates
 Match[class_identifier]=parents_container
 
