@@ -121,9 +121,9 @@
             <div class="row">
                 <div class="col-md-3">
                     {if $node.data_map.image.has_content}
-                        {*cache-block keys=concat($node.name|wash(),$node.node_id,"pedibus_adult_full_image")*}
+                        {cache-block keys=concat($node.name|wash(),$node.node_id,"pedibus_adult_full_image")}
                             <img src="{$node.data_map.image.content['pedibus_adult_full_image'].url|ezroot('no')}" alt="{$node.data_map.image.content.alternative_text|wash()}" title="{$node.data_map.image.content.alternative_text|wash()}"/>
-                        {*/cache-block*}
+                        {/cache-block}
                     {else}
                         <img src="{'placeholder-volontario.png'|ezimage('no')}" title="{$node.data_map.image.content.alternative_text|wash()}"/>
                     {/if}
@@ -190,7 +190,7 @@
             <div class="row absences_substitutions block">
                 <div class="col-md-12">
                     {if $current_user.is_logged_in}
-                    {*cache-block subtree_expiry=$__REVERSE_RELATED_ITEMS keys=concat($node.name|wash(),$node.node_id,"adult_not_avaiable")*}
+                    {cache-block subtree_expiry=$__REVERSE_RELATED_ITEMS keys=concat($node.name|wash(),$node.node_id,"adult_not_avaiable")}
                         <div class="side_block side_absences">
                             <p class="side_title"><i class="glyphicon glyphicon-time"></i><span>Assenze:</span></p>
                             <div class="list_availability">
@@ -231,9 +231,9 @@
                                 </ul>
                             </div>
                         </div>
-                    {*/cache-block*}
+                    {/cache-block}
                 
-                    {*cache-block subtree_expiry=$__REVERSE_RELATED_ITEMS keys=concat($node.name|wash(),$node.node_id,"adult_replace")*}
+                    {cache-block subtree_expiry=$__REVERSE_RELATED_ITEMS keys=concat($node.name|wash(),$node.node_id,"adult_replace")}
                         <div class="side_block side_replacements">
                             <p class="side_title"><i class="glyphicon glyphicon-time"></i><span>Sostituzioni:</span></p>
                             <div class="list_availability">
@@ -267,7 +267,7 @@
                                 </ul>
                             </div>
                         </div>
-                    {*/cache-block*}
+                    {/cache-block}
                 {/if}
 
                 </div>
@@ -278,7 +278,7 @@
         <div class="col-sm-3 col-md-4">
             <div class="sidebar">
                 <p class="sidebar_title">Riferimenti</p>
-                {*cache-block subtree_expiry=$__REVERSE_RELATED_ITEMS keys=concat($node.name|wash(),$node.node_id,"avaiable")*}
+                {cache-block subtree_expiry=$__REVERSE_RELATED_ITEMS keys=concat($node.name|wash(),$node.node_id,"avaiable")}
                     <div class="side_block ">
                         <p class="side_title"><i class="fa fa-user" aria-hidden="true"></i><span>Disponibilità:</span></p>
                         <div class="list_availability">
@@ -306,7 +306,7 @@
                         {/foreach}
                         </div>
                     </div>
-                {*/cache-block*}
+                {/cache-block}
 
                 
 

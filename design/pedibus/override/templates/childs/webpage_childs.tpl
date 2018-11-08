@@ -1,5 +1,5 @@
 {ezpagedata_set('has_container',  true())}
-{*set-block scope=root variable=cache_ttl}0{/set-block*}
+{set-block scope=root variable=cache_ttl}0{/set-block}
 {def $__TITLE = $node.name|wash()}
 {def $__LIMIT = ezini( 'IlPedibus', 'childs_page_limit', 'ilpedibus.ini' )}
 {* Deciso di prendere solo i bambini che sono sotto adesioni  *}
@@ -46,7 +46,7 @@
         {/if}
     {/if}
 
-    {*cache-block subtree_expiry=$node.url_alias keys=concat($node.name|wash(),$node.node_id,"accessions",$view_parameters.offset,$__LIMIT,$current_user.is_logged_in,$current_user.contentobject.name)*}
+    {cache-block subtree_expiry=$node.url_alias keys=concat($node.name|wash(),$node.node_id,"accessions",$view_parameters.offset,$__LIMIT,$current_user.is_logged_in,$current_user.contentobject.name)}
         <div class="container-fluid main_cage row_list_stops margin-bottom">
             <div class="row">
                 <div class="col-xs-12">
@@ -101,7 +101,7 @@
                 </div>
             </div>
         </div>
-    {*/cache-block*}
+    {/cache-block}
     {include name=navigator
             uri='design:navigator/google.tpl'
             page_uri=$node.url_alias

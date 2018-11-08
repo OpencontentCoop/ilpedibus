@@ -72,7 +72,7 @@
             <div class="col-sm-3 col-md-4">
                 <div class="sidebar">
                     {if $__LINES|count()}
-                        {*cache-block subtree_expiry=$__LINES keys=concat($node.name|wash(),$node.node_id,"avaiable")*}
+                        {cache-block subtree_expiry=$__LINES keys=concat($node.name|wash(),$node.node_id,"avaiable")}
                             <div class="side_block side_volunteers">
                                 <p class="side_title">
                                     <i class="fa{* fa-user*}" aria-hidden="true"></i>
@@ -89,7 +89,7 @@
                                 {undef $__SINGLE_LINE}
                                 </ul>
                             </div>
-                        {*/cache-block*}
+                        {/cache-block}
                     {/if}
 
 

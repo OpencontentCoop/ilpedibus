@@ -1,5 +1,5 @@
 {ezpagedata_set('has_container',  true())}
-{*set-block scope=root variable=cache_ttl}0{/set-block*}
+{set-block scope=root variable=cache_ttl}0{/set-block}
 {def $__LIMIT = ezini( 'IlPedibus', 'max_lines', 'ilpedibus.ini' )}
 {def $__TITLE = $node.name|wash()}
 {def $__LINEE = fetch(
@@ -46,7 +46,7 @@
         {/if}
     {/if}
 
-    {*cache-block subtree_expiry=$node.url_alias keys=concat($node.name|wash(),$node.node_id,"linee",$current_user.is_logged_in,$current_user.contentobject.name)*}
+    {cache-block subtree_expiry=$node.url_alias keys=concat($node.name|wash(),$node.node_id,"linee",$current_user.is_logged_in,$current_user.contentobject.name)}
         <div class="container-fluid main_cage row_list_lines margin-bottom">
             <div class="row">
             {foreach $__LINEE as $__SINGLE_LINE}
@@ -77,7 +77,7 @@
                             {/if}
                             <p class="line_title{$__BUTTON_CLASS}">{$__SINGLE_LINE.name|wash()}</p>
                             {if $__SINGLE_LINE.data_map.fermate.content.relation_list|count()}
-                                {*cache-block subtree_expiry=$__SINGLE_LINE.data_map.fermate.content.relation_list keys=concat($node.name|wash(),$node.node_id,"stops")*}
+                                {cache-block subtree_expiry=$__SINGLE_LINE.data_map.fermate.content.relation_list keys=concat($node.name|wash(),$node.node_id,"stops")}
                                     <p class="white-space">
                                         <strong>Fermate</strong>
                                         {foreach  $__SINGLE_LINE.data_map.fermate.content.relation_list as $__KEY => $__SINGLE_STOP_REF}
@@ -87,7 +87,7 @@
                                             {undef $__SINGLE_STOP}
                                         {/foreach}
                                     </p>
-                                {*/cache-block*}
+                                {/cache-block}
                             {/if}
                             {undef $__BUTTON_CLASS}
                         </div>
@@ -96,7 +96,7 @@
             {/foreach}
             </div>
         </div>
-    {*/cache-block*}
+    {/cache-block}
     {include name=navigator
             uri='design:navigator/google.tpl'
             page_uri=$node.url_alias

@@ -4,7 +4,7 @@
 {def $__TITLE = ''}
 <div class="container-fluid main_cage first_row_hp">
     <div class="row">
-    {*cache-block subtree_expiry=$__HOME_BLOCKS keys=concat($node.name|wash(),$node.node_id)*}
+    {cache-block subtree_expiry=$__HOME_BLOCKS keys=concat($node.name|wash(),$node.node_id)}
         {foreach $__HOME_BLOCKS as $__KEY => $__NODE_RELATION}
             {set $__HOME_BLOCK = fetch('content','node',hash('node_id',$__NODE_RELATION.node_id))}
 
@@ -28,7 +28,7 @@
                 </a>
             </div>
         {/foreach}
-    {*/cache-block*}
+    {/cache-block}
     </div>
 </div>
 

@@ -16,9 +16,9 @@
         <div class="col-xs-12">
 
             {if $node.data_map.image.has_content}
-                {*cache-block keys=concat($node.name|wash(),$node.node_id,"first_image")*}
+                {cache-block keys=concat($node.name|wash(),$node.node_id,"first_image")}
                     <img src="{$node.data_map.image.content['pedibus_editorial_image'].url|ezroot('no')}" alt="{$node.data_map.image.content.alternative_text|wash()}" title="{$node.data_map.image.content.alternative_text|wash()}"/>
-                {*/cache-block*}
+                {/cache-block}
             {/if}
             {if $node.data_map.description.has_content}
                 <p class="white-space">
@@ -30,7 +30,7 @@
 </div>
 {def $__LIST_FILES = $node.data_map.files.content.relation_list}
 {if $__LIST_FILES}
-    {*cache-block subtree_expiry=$__LIST_FILES keys=concat($node.name|wash(),$node.node_id,"files")*}
+    {cache-block subtree_expiry=$__LIST_FILES keys=concat($node.name|wash(),$node.node_id,"files")}
         <div class="row_pdf">
             <div class="container-fluid main_cage">
                 <div class="row">
@@ -56,12 +56,12 @@
                 </div>
             </div>
         </div>
-    {*/cache-block*}
+    {/cache-block}
 {/if}
 
 {def $__IMAGES = $node.data_map.images.content.relation_list}
 {if $__IMAGES|count()|gt(1)}
-    {*cache-block subtree_expiry=$__IMAGES keys=concat($node.name|wash(),$node.node_id,"images")*}
+    {cache-block subtree_expiry=$__IMAGES keys=concat($node.name|wash(),$node.node_id,"images")}
         <div class="row_gallery">
             <div class="text-center icon_camera">
                 <i class="fa fa-camera" aria-hidden="true"></i>
@@ -71,13 +71,13 @@
                     <div class="gallery">
                         {foreach $__IMAGES as $__KEY => $__IMAGE_RELATION}
                             {def $__IMAGE = fetch('content','node',hash('node_id',$__IMAGE_RELATION.node_id))}
-                            {*cache-block subtree_expiry=$__IMAGES keys=concat($node.name|wash(),$__KEY,"webpage-image-full-thumb")*}
+                            {cache-block subtree_expiry=$__IMAGES keys=concat($node.name|wash(),$__KEY,"webpage-image-full-thumb")}
                                 <div class="col-xs-6 col-sm-3 single_image">
                                     <a class="magnific" href="{$__IMAGE.data_map.image.content['original'].url|ezroot(no)}" title="{$__IMAGE.data_map.image.content.alternative_text|wash()}">
                                         <img src={$__IMAGE.data_map.image.content['pedibus_editorial_images'].url|ezroot()} alt="{$__IMAGE.data_map.image.content.alternative_text|wash()}" title="{$__IMAGE.data_map.title.content|wash()}" />
                                     </a>
                                 </div>
-                            {*/cache-block*}
+                            {/cache-block}
                             {undef $__IMAGE}
                         {/foreach}
                     </div>
@@ -91,7 +91,7 @@
                 </div>
             </div>
         </div>
-    {*/cache-block*}
+    {/cache-block}
 {/if}
 
 {undef}

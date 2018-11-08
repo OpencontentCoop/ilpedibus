@@ -59,11 +59,11 @@
         <div class="row">
             <div class="col-sm-9 col-md-8 small_content">
                 {if $node.data_map.fermate.content.relation_list|count()}
-                    {*cache-block subtree_expiry=$node.data_map.fermate.content.relation_list keys=concat($node.name|wash(),$node.node_id,"stop")*}
+                    {cache-block subtree_expiry=$node.data_map.fermate.content.relation_list keys=concat($node.name|wash(),$node.node_id,"stop")}
                             <p><strong>Fermate e orari:</strong></p>
 
                             {if $node.data_map.fermate.content.relation_list|count()}
-                                {*cache-block subtree_expiry=$node.data_map.fermate.content.relation_list keys=concat($node.name|wash(),$node.node_id,"stop-time")*}
+                                {cache-block subtree_expiry=$node.data_map.fermate.content.relation_list keys=concat($node.name|wash(),$node.node_id,"stop-time")}
                                     <div class="stops_and_times row_list_stops">
                                         <!--<p class="side_title"><i class="glyphicon glyphicon-time"></i><span>Orari:</span></p>-->
                                         <ul>
@@ -94,7 +94,7 @@
                                             {/foreach}
                                         </ul>
                                     </div>
-                                {*/cache-block*}
+                                {/cache-block}
                          {/if}
     <!--
                             <ul>
@@ -107,7 +107,7 @@
                             {/foreach}
                             </ul>
     -->
-                    {*/cache-block*}
+                    {/cache-block}
                 {/if}
 
                  <p class="white-space">
@@ -127,7 +127,7 @@
                 <div class="sidebar">
                     <p class="sidebar_title">Riferimenti</p>
                     {if $__DISPONIBILITA|count()}
-                        {*cache-block subtree_expiry=$__DISPONIBILITA keys=concat($node.name|wash(),$node.node_id,"avaiable")*}
+                        {cache-block subtree_expiry=$__DISPONIBILITA keys=concat($node.name|wash(),$node.node_id,"avaiable")}
                             <div class="side_block side_volunteers">
                                 <p class="side_title">
                                     <i class="fa fa-user" aria-hidden="true"></i>
@@ -150,7 +150,7 @@
                                 {undef $__DISPONIBILITA}
                                 </ul>
                             </div>
-                        {*/cache-block*}
+                        {/cache-block}
                     {/if}
 
 
