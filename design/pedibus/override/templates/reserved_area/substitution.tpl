@@ -1,7 +1,10 @@
 {ezpagedata_set('has_container',  true())}
 {set-block scope=root variable=cache_ttl}0{/set-block}
 {def $__AREA_RISERVATA = fetch('content','node',hash('node_id', ezini( 'IlPedibus', 'AreaRiservata', 'ilpedibus.ini' )))}
+
 {def $__CURRENT_TIMESTAMP = currentdate()}
+{def $__MONTH_SECONDS = 2592000}
+
 
 {def $__VOLUNTEERS = fetch(
                             'content',
@@ -20,7 +23,7 @@
                                 'class_filter_type', 'include',
                                 'class_filter_array', array('assenza_volontario'),
                                 'attribute_filter', array(
-                                                            array( 'assenza_volontario/data','>=', $__CURRENT_TIMESTAMP)
+                                                            array( 'assenza_volontario/data','>=', sub($__CURRENT_TIMESTAMP,mul( $__MONTH_SECONDS, ezini( 'IlPedibus', 'absences_months', 'ilpedibus.ini' ) )))
                                 ),
                             )
 )}
