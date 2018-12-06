@@ -53,7 +53,6 @@
                     )
     }
 
-
     <div class="container-fluid main_cage row_content_with_side margin-both">
         <div class="row">
             <div class="col-sm-9 col-md-8 small_content">
@@ -115,17 +114,20 @@
                                     <span>Volontari:</span>
                                 </p>
                                 <ul>
+                                {def $__CHECK_ADULT_ONE_TIME = array()}
                                 {foreach $__DISPONIBILITA as $__SINGLE_DISPONIBILITA}
                                     {foreach $__SINGLE_DISPONIBILITA.main_node.data_map.volontario.content.relation_list as $__SINGLE_VOLONTARIO}
                                         {def $__VOLONTARIO = fetch('content','node',hash('node_id', $__SINGLE_VOLONTARIO.node_id))}
-                                        {if $__VOLONTARIO}
+                                        {if and($__VOLONTARIO,$__CHECK_ADULT_ONE_TIME|contains($__VOLONTARIO.node_id)|not())}
                                             <li>
                                                 <a href="{$__VOLONTARIO.url|ezurl(no)}">{concat($__VOLONTARIO.data_map.nome.content," ", $__VOLONTARIO.data_map.cognome.content)}</a>
                                             </li>
+                                            {def $__CHECK_ADULT_ONE_TIME = $__CHECK_ADULT_ONE_TIME|append($__VOLONTARIO.node_id)}
                                         {/if}
                                         {undef $__VOLONTARIO}
                                     {/foreach}
                                 {/foreach}
+                                {undef $__CHECK_ADULT_ONE_TIME}
                                 {undef $__SINGLE_VOLONTARIO}
                                 {undef $__DISPONIBILITA}
                                 </ul>
