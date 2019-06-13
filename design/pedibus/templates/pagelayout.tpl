@@ -41,6 +41,7 @@
     {include uri='design:page_head_script.tpl'}
 {* ILPEDIBUS *}
     {include uri='design:pedibus_page_head.tpl'}
+    {include uri='design:page_head_google_tag_manager.tpl'}
 
 </head>
 {************ ILPEDIBUS ************}
@@ -50,6 +51,7 @@
 {/if}
 {************ /ILPEDIBUS ***********}
 <body class="{$theme} {$class_body} {$__HOMEPAGE_CLASS}{if $current_user.is_logged_in|not()} logged{/if}">
+{include uri='design:page_body_google_tag_manager.tpl'}
 {*<p>
     HOEMPAGE == {$pagedata.is_homepage}
 </p>*}
